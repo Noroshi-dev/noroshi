@@ -17,6 +17,7 @@
     "wrangler": "^3.0.0"
   },
   "dependencies": {
+    "drizzle-orm": "^0.30.10",
     "hono": "^4.4.0"
   }
 }
