@@ -1,40 +1,120 @@
-# Noroshi (狼煙)
 
-Noroshi is backend as a service on FaaS.
+## Database
 
-## Features in the future
+### Generate migration files
 
-### Compatible with Parse Server.
+```bash
+npx drizzle-kit generate
+```
 
-https://docs.parseplatform.org/rest/
+### Run migrations
 
-### TypeScript native
+```bash
+# To local
+npx wrangler d1 migrations apply noroshi-db --local
 
-## Supported Services
+# To staging
+npx wrangler d1 migrations apply noroshi-db
+```
 
-- [ ] Cloudflare Workers
-- [ ] AWS Lambda
-- [ ] Google Cloud Functions
-- [ ] Azure Functions
-- [ ] IBM Cloud Functions
-- [ ] Deno Deploy
+# API
 
-## Supported Databases
+## Authentication
 
-- [ ] MongoDB
-- [ ] PostgreSQL
-- [ ] MySQL
-- [ ] SQLite
-- [ ] Cloudflare D1
+Authentication header is below.
 
-## Supported Storage
+```ts
+{
+	Authorization: `Bearer ${token}`
+}
+```
 
-- [ ] AWS S3
-- [ ] Google Cloud Storage
-- [ ] Azure Blob Storage
-- [ ] IBM Cloud Object Storage
-- [ ] Cloudflare KV
+## User
 
-## License
+### Create user
 
-MIT
+```
+POST /users
+```
+
+#### Request
+
+```ts
+{
+	username: string,
+	password: string,
+	displayName: string | undefined,
+	email: string | undefined,
+}
+```
+
+#### Response
+
+```ts
+{
+	username
+	displayName
+	email
+}
+```
+
+### Delete user
+
+```
+DELETE /users
+```
+
+Authorization header is required.
+
+### Request
+
+None
+
+### Response
+
+```ts
+{}
+```
+
+## Auth
+
+### Login
+
+```
+POST /auth
+```
+
+#### Request
+
+```ts
+{
+	username: string,
+	password: string,
+}
+```
+
+#### Response
+
+```ts
+{
+	token: string
+}
+```
+
+### Logout
+
+```
+DELETE /auth
+```
+
+Authorization header is required.
+
+#### Request
+
+None
+
+#### Response
+
+```ts
+{}
+```
