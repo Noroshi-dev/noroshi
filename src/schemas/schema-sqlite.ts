@@ -3,24 +3,27 @@ import { sqliteTable, integer, text, primaryKey } from "drizzle-orm/sqlite-core"
 
 export const projects = sqliteTable("projects", {
   id: integer("id", {mode: "number"}).primaryKey({autoIncrement: true}),
+  slug: text("slug").notNull().unique(),
   name: text("name").notNull(),
-	threadsCount: integer("threads_count").default(0),
-	messagesCount: integer("messages_count").default(0),
-	membersCount: integer("members_count").default(0),
-	participationCondition: integer("participation_condition").default(0),
-	description: text("description").default(""),
-	iconUrl: text("icon_url").default(""),
-  createdAt: text("created_at").default(
+	threadsCount: integer("threads_count").notNull().default(0),
+	messagesCount: integer("messages_count").notNull().default(0),
+	membersCount: integer("members_count").notNull().default(0),
+	participationCondition: integer("participation_condition").notNull().default(0),
+	description: text("description").notNull().default(""),
+	iconUrl: text("icon_url").notNull().default(""),
+  createdAt: text("created_at").notNull().default(
     sql`CURRENT_TIMESTAMP`
   ),
-  updatedAt: text("updated_at").default(
+  updatedAt: text("updated_at").notNull().default(
     sql`CURRENT_TIMESTAMP`
   ),
 });
 
 export const projectsMembers = sqliteTable("projects_members", {
-  projectId: integer("project_id").notNull(),
-  userId: integer("user_id").notNull(),
+  projectId: integer("project_id").notNull()
+    .references(() => projects.id, { onDelete: "cascade" }),
+  userId: integer("user_id").notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   role: integer("role").default(0),
   createdAt: text("created_at").default(
     sql`CURRENT_TIMESTAMP`

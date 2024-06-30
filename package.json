@@ -8,6 +8,8 @@
     "@hono-storage/core": "^0.0.13",
     "@hono-storage/s3": "^0.0.12",
     "@hono/oauth-providers": "^0.5.1",
+    "@hono/swagger-ui": "^0.3.0",
+    "@hono/zod-openapi": "^0.14.5",
     "@hono/zod-validator": "^0.2.2",
     "@planetscale/database": "^1.18.0",
     "@types/uuid": "^10.0.0",

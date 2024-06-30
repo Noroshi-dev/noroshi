@@ -7,11 +7,24 @@ import { Get } from './get';
 import { googleAuth } from '@hono/oauth-providers/google';
 import { githubAuth } from '@hono/oauth-providers/github';
 import { authRequired } from '../util';
-import { Delete } from './delete';
-import { Create } from './create';
-// import { Delete } from './delete';
+import { Delete, route as DeleteRoute } from './delete';
+import { Create, route as CreateRoute } from './create';
+import { OpenAPIHono } from '@hono/zod-openapi'
 
-const app = new Hono<HonoConfig>();
+const app = new OpenAPIHono<HonoConfig>({
+	defaultHook: (result, c) => {
+    if (!result.success) {
+      return c.json(
+        {
+          ok: false,
+          errors: result.error,
+          source: 'custom_error_handler',
+        },
+        422
+      )
+    }
+  },
+});
 
 app.get('/google', async (c: Context, next) => {
 	googleAuth({
@@ -31,8 +44,10 @@ const validateJson = zValidator('json', z.object({
 // GITHUB_ID
 // GITHUB_SECRET
 app.get('/github', githubAuth({oauthApp: true, scope: ['user']}), Get);
-app.delete('/', authRequired, Delete);
-app.post('/', validateJson, Create)
+
+app.use(DeleteRoute.getRoutingPath(), authRequired);
+app.openapi(DeleteRoute, Delete);
+app.openapi(CreateRoute, Create);
 
 type WITHOUT_ID_URL = '';
 type WITH_ID_URL = `${WITHOUT_ID_URL}/:id`;

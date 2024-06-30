@@ -71,6 +71,20 @@
       "when": 1719642886950,
       "tag": "0009_low_firedrake",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1719663416942,
+      "tag": "0010_abnormal_chameleon",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1719710586935,
+      "tag": "0011_watery_jubilee",
+      "breakpoints": true
     }
   ]
 }
